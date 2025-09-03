@@ -10,47 +10,57 @@ class Node:
 class BinaryTree:
     def __init__(self):
         self.tree = Tree()
-        self.fila = deque()
+        self.filaMostragem = deque()
+        self.filaNodes = deque()
         self.root = None
 
+    def insert_level_order(self, data):
+        if self.root == None:
+            self.root = Node(data)
 
-    def addNode(self):
-        i = None
-        while(i != ""):
-            i = input("\nDigite o valor do nó a ser inserido (Deixe vazio para encerrar):")
-            if i != "":
-                if len(self.tree) == 0:
-                    self.tree.create_node(i, i)
-                    self.fila.append(i)
-                    self.fila.append(i)
-                else:
-                    self.fila.append(i)
-                    self.fila.append(i)
-                    self.tree.create_node(i, i, parent=self.fila.popleft())
-            else:
-                break
+            self.tree.create_node(data, data)
+            self.filaMostragem.append(data)
+            self.filaMostragem.append(data)
+            self.filaNodes.append(self.root)
+            self.filaNodes.append(self.root)
+
+            return
+
+        node = Node(data)
+        pai = self.filaNodes.popleft()
+
+        if pai.left == None:
+            pai.left = node
+        else:
+            pai.right = node
+
+        self.filaMostragem.append(data)
+        self.filaMostragem.append(data)
+        self.tree.create_node(data, data, parent=self.filaMostragem.popleft())
+        self.filaNodes.append(node)
+        self.filaNodes.append(node)
+
+    def inorder(self, Node):
+        if Node.left is not None:
+            self.inorder(Node.left)
+        print(Node.data)
+        if Node.right is not None:
+            self.inorder(Node.right)
+
+    def preorder(self, Node):
+        print(Node.data)
+        if Node.left is not None:
+            self.preorder(Node.left)
+        if Node.right is not None:
+            self.preorder(Node.right)
 
 
-
-
-
-
-
-    def insert_level_order(self, data): #inserção automática por nível
-        # implementar
-        pass
-
-    def inorder(self, node):
-        # implementar
-        pass
-
-    def preorder(self, node):
-        # implementar
-        pass
-
-    def postorder(self, node):
-        # implementar
-        pass
+    def postorder(self, Node):
+        if Node.left is not None:
+            self.postorder(Node.left)
+        if Node.right is not None:
+            self.postorder(Node.right)
+        print(Node.data)
 
     def level_order(self):
         # implementar
@@ -78,13 +88,24 @@ class BinaryTree:
 
     def mostrarArvore(self):
         print('\n')
+        self.inorder(self.root)
+        print('\n')
+        self.preorder(self.root)
+        print('\n')
+        self.postorder(self.root)
+        print('\n')
         self.tree.show()
 
 
 
 if __name__ == '__main__':
     arvore = BinaryTree()
-    arvore.addNode()
+    arvore.insert_level_order(1)
+    arvore.insert_level_order(2)
+    arvore.insert_level_order(3)
+    arvore.insert_level_order(4)
+    arvore.insert_level_order(5)
+    arvore.insert_level_order(6)
     arvore.mostrarArvore()
 
 
