@@ -10,38 +10,52 @@ class Node:
 class BinaryTree:
     def __init__(self):
         self.root = None
+    
 
-    def insert_level_order(self, data): 
-        if(self.root == None):
+    def insert_level_order(self, data):
+        if self.root is None:
             self.root = Node(data)
             return
+        
         f = deque()
         f.append(self.root)
-        while(len(f) > 0):
-            temp = f.pop()
-            if(temp.left is None):
+        
+        while len(f) > 0:
+            temp = f.popleft() 
+            
+            if temp.left is None:
                 temp.left = Node(data)
+                break
             else:
                 f.append(temp.left) 
-                
 
-        
-            
-                        
-
-        
+            if temp.right is None:
+                temp.right = Node(data)
+                break
+            else:
+                f.append(temp.right)
 
     def inorder(self, node):
         # implementar
         pass
 
     def preorder(self, node):
-        # implementar
-        pass
+        if(node == None):
+            return
+        
+        print(node.data)
+        self.preorder(node.left)
+        self.preorder(node.right)
+
+
 
     def postorder(self, node):
-        # implementar
-        pass
+        if(node == None):
+            return
+        
+        self.postorder(node.left)
+        self.postorder(node.right)
+        print(node.data)
 
     def level_order(self):
         # implementar
@@ -68,4 +82,9 @@ class BinaryTree:
         pass
 
 
+arvore = BinaryTree()
+for i in range(16):
+    arvore.insert_level_order(i)
+
+arvore.preorder(arvore.root)
 
