@@ -15,40 +15,41 @@ class BinaryTree:
         self.root = None
 
     def insert_level_order(self, data):
-        if self.root == None:
-            self.root = Node(data)
+        No = Node(data)
 
-            self.tree.create_node(data, data)
-            self.filaMostragem.append(data)
-            self.filaMostragem.append(data)
-            self.filaNodes.append(self.root)
-            self.filaNodes.append(self.root)
-
+        if self.root is None:
+            self.root = No
+            self.tree.create_node(data, data) 
             return
 
-        node = Node(data)
-        pai = self.filaNodes.popleft()
+        fila = deque([self.root])
+        
+        while True:
+            pai = fila.popleft()
 
-        if pai.left == None:
-            pai.left = node
-        else:
-            pai.right = node
+            if pai.left is None:
+                pai.left = No
+                self.tree.create_node(data, data, parent=pai.data)
+                break
+            else:
+                fila.append(pai.left)
 
-        self.filaMostragem.append(data)
-        self.filaMostragem.append(data)
-        self.tree.create_node(data, data, parent=self.filaMostragem.popleft())
-        self.filaNodes.append(node)
-        self.filaNodes.append(node)
+            if pai.right is None:
+                pai.right = No
+                self.tree.create_node(data, data, parent=pai.data) 
+                break  
+            else:
+                fila.append(pai.right)
 
     def inorder(self, Node):
         if Node.left is not None:
             self.inorder(Node.left)
-        print(Node.data)
+        print(Node.data, end=" ")
         if Node.right is not None:
             self.inorder(Node.right)
 
     def preorder(self, Node):
-        print(Node.data)
+        print(Node.data, end=" ")
         if Node.left is not None:
             self.preorder(Node.left)
         if Node.right is not None:
@@ -60,11 +61,24 @@ class BinaryTree:
             self.postorder(Node.left)
         if Node.right is not None:
             self.postorder(Node.right)
-        print(Node.data)
+        print(Node.data, end=" ")
 
     def level_order(self):
-        # implementar
-        pass
+        if self.root is None:
+            return
+
+        nodes_queue = deque([self.root])
+
+        while len(nodes_queue) > 0:
+            current_node = nodes_queue.popleft()
+
+            print(current_node.data, end=" ")
+
+            if current_node.left is not None:
+                nodes_queue.append(current_node.left)
+            
+            if current_node.right is not None:
+                nodes_queue.append(current_node.right)
 
     def is_perfect(self):
         # Retorna true se a árvore for perfeita
@@ -88,12 +102,15 @@ class BinaryTree:
 
     def mostrarArvore(self):
         print('\n')
+        print("In-Order: ", end=" ")
         self.inorder(self.root)
-        print('\n')
+        print("\nPré-Ordem: ", end=" ")
         self.preorder(self.root)
-        print('\n')
+        print("\nPós-Ordem: ", end=" ")
         self.postorder(self.root)
-        print('\n')
+        print("\nLevel-Order: ", end=" ")
+        self.level_order()
+        print("\n")
         self.tree.show()
 
 
@@ -106,6 +123,7 @@ if __name__ == '__main__':
     arvore.insert_level_order(4)
     arvore.insert_level_order(5)
     arvore.insert_level_order(6)
+
     arvore.mostrarArvore()
 
 
